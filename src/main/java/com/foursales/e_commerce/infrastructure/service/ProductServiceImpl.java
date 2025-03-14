@@ -29,8 +29,8 @@ public record ProductServiceImpl(ProductRepository productRepository) implements
                 .build();
         try {
 
-        productRepository.save(product);
-        }catch (Exception e){
+            productRepository.save(product);
+        } catch (Exception e) {
             new RuntimeException(e);
         }
         return null;
@@ -48,8 +48,13 @@ public record ProductServiceImpl(ProductRepository productRepository) implements
 
     @Override
     public List<Product> getAllProducts() {
-        var mapper = Mappers.getMapper(ProductMapper.class);
-        return mapper.entityToModel(productRepository.findAll());
+        try {
+            var mapper = Mappers.getMapper(ProductMapper.class);
+            return mapper.entityToModel(productRepository.findAll());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
