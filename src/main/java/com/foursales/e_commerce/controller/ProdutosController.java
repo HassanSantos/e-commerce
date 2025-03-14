@@ -1,16 +1,14 @@
 package com.foursales.e_commerce.controller;
 
-import lombok.Getter;
+import com.foursales.e_commerce.application.usecase.CreateProductUseCase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @Controller
-@RestController
-public class ProdutosController {
+public record ProdutosController(CreateProductUseCase createProductUseCase) {
 
     @GetMapping
     public void teste(){
-
+        createProductUseCase.createProduct(null);
     }
 }
