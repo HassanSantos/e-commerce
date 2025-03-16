@@ -31,6 +31,7 @@ public record ProductServiceImpl(ProductRepository productRepository) implements
 
             productRepository.save(product);
         } catch (Exception e) {
+//            TODO: CRIAR EXCEPTION EXCLUSIVA
             new RuntimeException(e);
         }
         return null;

@@ -20,7 +20,7 @@ public class ProdutoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
     @Column(name = "nome")
     private String name;
     @Column(name = "descricao")
