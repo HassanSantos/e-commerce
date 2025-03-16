@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "pedido")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Order {
+public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -35,5 +36,7 @@ public class Order {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @OneToMany(mappedBy = "orderEntity",fetch = FetchType.EAGER)
+    private List<OrderProductEntity> orderProducts;
 
 }
