@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface OrderService {
-    Order createOrder(List<OrderProduct> order);
+    Order createOrder(List<OrderProduct> order, String user);
     Order payOrder(String orderId);
     List<Order> getOrdersByUser(UUID userId);
 }

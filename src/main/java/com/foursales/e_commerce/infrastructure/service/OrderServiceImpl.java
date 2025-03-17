@@ -24,13 +24,12 @@ public record OrderServiceImpl(OrderRepository orderRepository,
 ) implements OrderService {
 
     @Override
-    public Order createOrder(List<OrderProduct> orderProducts) {
+    public Order createOrder(List<OrderProduct> orderProducts, String user) {
         OrderEntity orderEntity = OrderEntity.builder()
                 .status("PENDENTE")
                 .value(getTotalValue(orderProducts))
                 .creationDate(LocalDateTime.now())
-                .updateDate(LocalDateTime.now())
-                .user(User.builder().id("7c97a0f8-f4ac-4942-940d-97d9e3cc2d7d").build()) // Associando o User ao Order
+                .user(User.builder().id(user).build()) // Associando o User ao Order
                 .build();
 
         orderRepository.save(orderEntity);
@@ -48,10 +47,10 @@ public record OrderServiceImpl(OrderRepository orderRepository,
 
     private BigDecimal getTotalValue(List<OrderProduct> orderProducts) {
         BigDecimal totalValue = BigDecimal.ZERO;
-        for(OrderProduct orderProduct : orderProducts) {
+        for (OrderProduct orderProduct : orderProducts) {
             totalValue = totalValue.add(orderProduct.getPreco().multiply(orderProduct.getPreco()));
         }
-       return totalValue;
+        return totalValue;
     }
 
     @Override
