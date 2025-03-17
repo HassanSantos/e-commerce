@@ -1,4 +1,4 @@
-package com.foursales.e_commerce.application.usecase;
+package com.foursales.e_commerce.application.usecase.product;
 
 import com.foursales.e_commerce.domain.service.ProductService;
 import com.foursales.e_commerce.domain.service.model.Product;

@@ -9,9 +9,7 @@ import com.foursales.e_commerce.repository.ProductRepository;
 import com.foursales.e_commerce.repository.UserRepository;
 import com.foursales.e_commerce.repository.entity.OrderEntity;
 import com.foursales.e_commerce.repository.entity.OrderProductEntity;
-import com.foursales.e_commerce.repository.entity.ProdutoEntity;
 import com.foursales.e_commerce.repository.entity.User;
-import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,19 +21,56 @@ import java.util.UUID;
 public record ProductServiceImpl(ProductRepository productRepository,
                                  UserRepository userRepository,
                                  OrderRepository orderRepository,
-                                 OrderProductRepository orderProductRepository) implements ProductService {
+                                 OrderProductRepository orderProductRepository,
+                                 ProductMapper productMapper) implements ProductService {
 
     @Override
-    public Product createProduct() {
-        var product = ProdutoEntity.builder()
-                .name("Notebook ABC")
-                .description("Notebook com 16GB de RAM e SSD de 512GB")
-                .price(new BigDecimal("5999.99"))
-                .category("Informática")
-                .stockQuantity(50)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build();
+    public Product createProduct(Product product) {
+        var productEntity = productMapper.productToProductEntity(product);
+
+        try {
+
+            productRepository.save(productEntity);
+
+        } catch (Exception e) {
+//            TODO: CRIAR EXCEPTION EXCLUSIVA
+            new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
+    public Product updateProduct(UUID id, Product product) {
+        return null;
+    }
+
+    @Override
+    public void deleteProduct(String id) {
+        try {
+            productRepository.deleteById(id);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        try {
+            return productMapper.entityToModel(productRepository.findAll());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public Product getProductById(String id) {
+        return productMapper.productEntityToProduct(productRepository.findById(id).get());
+    }
+
+    public Product creatdeProduct(Product product) {
+        var productEntity = productMapper.productToProductEntity(product);
 
         User user = User.builder()
                 .name("João Silva")
@@ -56,7 +91,7 @@ public record ProductServiceImpl(ProductRepository productRepository,
 
         OrderProductEntity orderProduct = OrderProductEntity.builder()
                 .orderEntity(orderEntity) // Associando o Order ao OrderProduct
-                .product(product) // Associando o Product ao OrderProduct
+                .product(productEntity) // Associando o Product ao OrderProduct
                 .productQuantity(1)
                 .build();
 
@@ -64,41 +99,13 @@ public record ProductServiceImpl(ProductRepository productRepository,
         try {
             userRepository.save(user);
             orderRepository.save(orderEntity);
-            productRepository.save(product);
+            productRepository.save(productEntity);
             orderProductRepository.save(orderProduct);
 
         } catch (Exception e) {
 //            TODO: CRIAR EXCEPTION EXCLUSIVA
             new RuntimeException(e);
         }
-        return null;
-    }
-
-    @Override
-    public Product updateProduct(UUID id, Product product) {
-        return null;
-    }
-
-    @Override
-    public void deleteProduct(UUID id) {
-
-    }
-
-    @Override
-    public List<Product> getAllProducts() {
-        try {
-            var mapper = Mappers.getMapper(ProductMapper.class);
-
-            var lista = orderRepository.findAll();
-            return mapper.entityToModel(productRepository.findAll());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    @Override
-    public Product getProductById(UUID id) {
         return null;
     }
 }
