@@ -1,6 +1,6 @@
-package com.foursales.e_commerce.repository;
+package com.foursales.e_commerce.infrastructure.service.repository;
 
-import com.foursales.e_commerce.repository.entity.User;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

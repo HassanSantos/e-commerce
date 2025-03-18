@@ -46,8 +46,6 @@ public record OrderController(OrderService orderService) {
     public ResponseEntity<BigDecimal> totalAmountInvoicedPeriod(@RequestParam("startDate") LocalDate startDate,
                                                                 @RequestParam("endDate") LocalDate endDate) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-
         return ResponseEntity.ok(orderService.totalAmountInvoicedPeriod(startDate, endDate));
     }
 

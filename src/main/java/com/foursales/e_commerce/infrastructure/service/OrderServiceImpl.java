@@ -1,18 +1,18 @@
 package com.foursales.e_commerce.infrastructure.service;
 
-import com.foursales.e_commerce.comum.OrderMapper;
+import com.foursales.e_commerce.mapper.OrderMapper;
 import com.foursales.e_commerce.domain.service.OrderService;
 import com.foursales.e_commerce.domain.service.model.Order;
 import com.foursales.e_commerce.domain.service.model.OrderProduct;
 import com.foursales.e_commerce.dto.UserAverageTicketDTO;
 import com.foursales.e_commerce.dto.UserOrderCountDTO;
-import com.foursales.e_commerce.repository.OrderProductRepository;
-import com.foursales.e_commerce.repository.OrderRepository;
-import com.foursales.e_commerce.repository.ProductRepository;
-import com.foursales.e_commerce.repository.entity.OrderEntity;
-import com.foursales.e_commerce.repository.entity.OrderProductEntity;
-import com.foursales.e_commerce.repository.entity.ProdutoEntity;
-import com.foursales.e_commerce.repository.entity.User;
+import com.foursales.e_commerce.infrastructure.service.repository.OrderProductRepository;
+import com.foursales.e_commerce.infrastructure.service.repository.OrderRepository;
+import com.foursales.e_commerce.infrastructure.service.repository.ProductRepository;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.OrderEntity;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.OrderProductEntity;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.ProdutoEntity;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

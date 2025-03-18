@@ -1,7 +1,7 @@
 package com.foursales.e_commerce.dto;
 
 
-import com.foursales.e_commerce.repository.entity.Role;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.Role;
 
 import java.util.List;
 

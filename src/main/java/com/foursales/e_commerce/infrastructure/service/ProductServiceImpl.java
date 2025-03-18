@@ -1,12 +1,12 @@
 package com.foursales.e_commerce.infrastructure.service;
 
-import com.foursales.e_commerce.comum.ProductMapper;
+import com.foursales.e_commerce.mapper.ProductMapper;
 import com.foursales.e_commerce.domain.service.ProductService;
 import com.foursales.e_commerce.domain.service.model.Product;
-import com.foursales.e_commerce.repository.OrderProductRepository;
-import com.foursales.e_commerce.repository.OrderRepository;
-import com.foursales.e_commerce.repository.ProductRepository;
-import com.foursales.e_commerce.repository.UserRepository;
+import com.foursales.e_commerce.infrastructure.service.repository.OrderProductRepository;
+import com.foursales.e_commerce.infrastructure.service.repository.OrderRepository;
+import com.foursales.e_commerce.infrastructure.service.repository.ProductRepository;
+import com.foursales.e_commerce.infrastructure.service.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

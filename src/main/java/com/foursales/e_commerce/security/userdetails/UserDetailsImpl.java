@@ -1,7 +1,7 @@
 package com.foursales.e_commerce.security.userdetails;
 
 
-import com.foursales.e_commerce.repository.entity.User;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,8 +1,8 @@
 package com.foursales.e_commerce.security.authentication;
 
 
-import com.foursales.e_commerce.repository.UserRepository;
-import com.foursales.e_commerce.repository.entity.User;
+import com.foursales.e_commerce.infrastructure.service.repository.UserRepository;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.User;
 import com.foursales.e_commerce.security.config.SecurityConfiguration;
 import com.foursales.e_commerce.security.userdetails.UserDetailsImpl;
 import jakarta.servlet.FilterChain;

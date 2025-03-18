@@ -1,6 +1,6 @@
-package com.foursales.e_commerce.repository.entity;
+package com.foursales.e_commerce.infrastructure.service.repository.entity;
 
-import com.foursales.e_commerce.repository.entity.enums.RoleName;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.enums.RoleName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

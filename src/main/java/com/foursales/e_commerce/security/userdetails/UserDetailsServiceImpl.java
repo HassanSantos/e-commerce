@@ -1,8 +1,8 @@
 package com.foursales.e_commerce.security.userdetails;
 
 
-import com.foursales.e_commerce.repository.UserRepository;
-import com.foursales.e_commerce.repository.entity.User;
+import com.foursales.e_commerce.infrastructure.service.repository.UserRepository;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

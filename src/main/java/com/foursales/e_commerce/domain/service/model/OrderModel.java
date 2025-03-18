@@ -1,7 +1,7 @@
 package com.foursales.e_commerce.domain.service.model;
 
-import com.foursales.e_commerce.repository.entity.OrderProductEntity;
-import com.foursales.e_commerce.repository.entity.User;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.OrderProductEntity;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.User;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

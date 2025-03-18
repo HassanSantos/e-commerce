@@ -1,8 +1,8 @@
-package com.foursales.e_commerce.repository;
+package com.foursales.e_commerce.infrastructure.service.repository;
 
 import com.foursales.e_commerce.dto.UserAverageTicketDTO;
 import com.foursales.e_commerce.dto.UserOrderCountDTO;
-import com.foursales.e_commerce.repository.entity.OrderEntity;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
