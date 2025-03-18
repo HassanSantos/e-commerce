@@ -16,7 +16,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, String> {
     @Query("""
         SELECT NEW com.foursales.e_commerce.dto.UserOrderCountDTO(
             u.name, COUNT(o.id))
-        FROM User u
+        FROM UserEntity u
         INNER JOIN OrderEntity o ON u.id = o.userEntity.id
         GROUP BY u.id
         ORDER BY COUNT(o.id) DESC
@@ -28,7 +28,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, String> {
             SELECT NEW com.foursales.e_commerce.dto.UserAverageTicketDTO(u.name,
                          CAST(AVG(o.value) as bigdecimal))
             FROM OrderEntity o
-            INNER JOIN User u
+            INNER JOIN UserEntity u
                         on u.id = o.userEntity.id
             GROUP BY u.id, u.name
             ORDER BY AVG(o.value) DESC
@@ -36,7 +36,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, String> {
     List<UserAverageTicketDTO> findUserAverageTicket();
 
     @Query("""
-        SELECT SUM(p.value) 
+        SELECT SUM(p.value)
         FROM OrderEntity p
         WHERE p.creationDate BETWEEN :startDate AND :endDate
         AND p.status = :status
@@ -47,5 +47,5 @@ public interface OrderRepository extends JpaRepository<OrderEntity, String> {
             @Param("status") String status
     );
 
-    List<OrderEntity> findByUser_Email(String email);
+    List<OrderEntity> findByUserEntity_Email(String email);
 }

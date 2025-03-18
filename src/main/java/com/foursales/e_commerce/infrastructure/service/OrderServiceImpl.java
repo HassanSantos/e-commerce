@@ -105,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
 
     public List<OrderProductDto> ordersByUser(String email) {
         try {
-            var orders = orderRepository.findByUser_Email(email);
+            var orders = orderRepository.findByUserEntity_Email(email);
             return orderMapper.orderEntityToOrder(orders);
         } catch (Exception e) {
             throw new RuntimeException(e);
