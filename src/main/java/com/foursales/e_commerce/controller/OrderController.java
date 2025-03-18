@@ -1,9 +1,7 @@
 package com.foursales.e_commerce.controller;
 
 import com.foursales.e_commerce.domain.service.OrderService;
-import com.foursales.e_commerce.domain.service.model.Order;
-import com.foursales.e_commerce.domain.service.model.OrderModel;
-import com.foursales.e_commerce.domain.service.model.OrderProduct;
+import com.foursales.e_commerce.dto.OrderProductDto;
 import com.foursales.e_commerce.dto.UserAverageTicketDTO;
 import com.foursales.e_commerce.dto.UserOrderCountDTO;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +19,8 @@ import java.util.List;
 public record OrderController(OrderService orderService) {
 
     @PostMapping("/create")
-    public ResponseEntity<String> listProducts(@RequestBody List<OrderProduct> orderProducts, @RequestHeader String user) {
-        orderService.createOrder(orderProducts, user);
+    public ResponseEntity<String> listProducts(@RequestBody List<OrderProductDto> orderProductDtos, @RequestHeader String user) {
+        orderService.createOrder(orderProductDtos, user);
         return ResponseEntity.ok("ok");
     }
 
@@ -50,7 +48,7 @@ public record OrderController(OrderService orderService) {
     }
 
     @GetMapping("/current-user")
-    public ResponseEntity<List<OrderProduct>> ordersUser() {
+    public ResponseEntity<List<OrderProductDto>> ordersUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return ResponseEntity.ok(orderService.ordersByUser(authentication.getPrincipal().toString()));
     }

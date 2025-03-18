@@ -2,7 +2,7 @@ package com.foursales.e_commerce.security.userdetails;
 
 
 import com.foursales.e_commerce.infrastructure.service.repository.UserRepository;
-import com.foursales.e_commerce.infrastructure.service.repository.entity.User;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,8 +17,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
-        return new UserDetailsImpl(user);
+        UserEntity userEntity = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+        return new UserDetailsImpl(userEntity);
     }
 
 }

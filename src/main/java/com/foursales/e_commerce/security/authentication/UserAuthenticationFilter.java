@@ -2,7 +2,7 @@ package com.foursales.e_commerce.security.authentication;
 
 
 import com.foursales.e_commerce.infrastructure.service.repository.UserRepository;
-import com.foursales.e_commerce.infrastructure.service.repository.entity.User;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.UserEntity;
 import com.foursales.e_commerce.security.config.SecurityConfiguration;
 import com.foursales.e_commerce.security.userdetails.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
@@ -35,8 +35,8 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
             String token = recoveryToken(request); // Recupera o token do cabeçalho Authorization da requisição
             if (token != null) {
                 String subject = jwtTokenService.getSubjectFromToken(token); // Obtém o assunto (neste caso, o nome de usuário) do token
-                User user = userRepository.findByEmail(subject).get(); // Busca o usuário pelo email (que é o assunto do token)
-                UserDetailsImpl userDetails = new UserDetailsImpl(user); // Cria um UserDetails com o usuário encontrado
+                UserEntity userEntity = userRepository.findByEmail(subject).get(); // Busca o usuário pelo email (que é o assunto do token)
+                UserDetailsImpl userDetails = new UserDetailsImpl(userEntity); // Cria um UserDetails com o usuário encontrado
 
                 // Cria um objeto de autenticação do Spring Security
                 Authentication authentication =

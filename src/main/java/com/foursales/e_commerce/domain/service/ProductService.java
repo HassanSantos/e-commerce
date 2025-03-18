@@ -1,14 +1,14 @@
 package com.foursales.e_commerce.domain.service;
 
-import com.foursales.e_commerce.domain.service.model.Product;
+import com.foursales.e_commerce.dto.ProductDto;
 
 import java.util.List;
 
 public interface ProductService {
 
-    Product createProduct(Product product);
-    Product updateProduct(Product product);
+    ProductDto createProduct(ProductDto productDto);
+    ProductDto updateProduct(ProductDto productDto);
     void deleteProduct(String id);
-    List<Product> getAllProducts();
-    Product getProductById(String id);
+    List<ProductDto> getAllProducts();
+    ProductDto getProductById(String id);
 }

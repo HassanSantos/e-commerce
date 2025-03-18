@@ -1,4 +1,4 @@
-package com.foursales.e_commerce.domain.service.model;
+package com.foursales.e_commerce.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Builder
 @Getter
 @Setter
-public class OrderProduct {
+public class OrderProductDto {
 
     private String id;
     private Integer quantidade;

@@ -5,8 +5,8 @@ import com.foursales.e_commerce.dto.CreateUserDto;
 import com.foursales.e_commerce.dto.LoginUserDto;
 import com.foursales.e_commerce.dto.RecoveryJwtTokenDto;
 import com.foursales.e_commerce.infrastructure.service.repository.UserRepository;
-import com.foursales.e_commerce.infrastructure.service.repository.entity.Role;
-import com.foursales.e_commerce.infrastructure.service.repository.entity.User;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.RoleEntity;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.UserEntity;
 import com.foursales.e_commerce.security.authentication.JwtTokenService;
 import com.foursales.e_commerce.security.config.SecurityConfiguration;
 import com.foursales.e_commerce.security.userdetails.UserDetailsImpl;
@@ -57,20 +57,20 @@ public class UserService {
     public void createUser(CreateUserDto createUserDto) {
 
         // Cria um novo usuário com os dados fornecidos
-        User newUser = User.builder()
+        UserEntity newUserEntity = UserEntity.builder()
                 .name("hassan")
                 .email(createUserDto.email())
                 // Codifica a senha do usuário com o algoritmo bcrypt
                 .password(securityConfiguration.passwordEncoder().encode(createUserDto.password()))
                 // Atribui ao usuário uma permissão específica
-                .roles(List.of(Role.builder().name(createUserDto.role()).build()))
+                .roleEntities(List.of(RoleEntity.builder().name(createUserDto.role()).build()))
                 .build();
 
         // Salva o novo usuário no banco de dados
 
         try {
 
-            userRepository.save(newUser);
+            userRepository.save(newUserEntity);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

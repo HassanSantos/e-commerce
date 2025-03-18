@@ -1,7 +1,7 @@
 package com.foursales.e_commerce.security.userdetails;
 
 
-import com.foursales.e_commerce.infrastructure.service.repository.entity.User;
+import com.foursales.e_commerce.infrastructure.service.repository.entity.UserEntity;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 @Getter
 public class UserDetailsImpl implements UserDetails {
 
-    private User user; // Classe de usuário que criamos anteriormente
+    private UserEntity userEntity; // Classe de usuário que criamos anteriormente
 
-    public UserDetailsImpl(User user) {
-        this.user = user;
+    public UserDetailsImpl(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class UserDetailsImpl implements UserDetails {
          novo SimpleGrantedAuthority, que é uma implementação simples de
          GrantedAuthority
         */
-        return user.getRoles()
+        return userEntity.getRoleEntities()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
@@ -36,12 +36,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return userEntity.getPassword();
     } // Retorna a credencial do usuário que criamos anteriormente
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return userEntity.getEmail();
     } // Retorna o nome de usuário do usuário que criamos anteriormente
 
     @Override

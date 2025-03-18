@@ -1,8 +1,8 @@
 package com.foursales.e_commerce.infrastructure.service;
 
+import com.foursales.e_commerce.dto.ProductDto;
 import com.foursales.e_commerce.mapper.ProductMapper;
 import com.foursales.e_commerce.domain.service.ProductService;
-import com.foursales.e_commerce.domain.service.model.Product;
 import com.foursales.e_commerce.infrastructure.service.repository.OrderProductRepository;
 import com.foursales.e_commerce.infrastructure.service.repository.OrderRepository;
 import com.foursales.e_commerce.infrastructure.service.repository.ProductRepository;
@@ -19,8 +19,8 @@ public record ProductServiceImpl(ProductRepository productRepository,
                                  ProductMapper productMapper) implements ProductService {
 
     @Override
-    public Product createProduct(Product product) {
-        var productEntity = productMapper.productToProductEntity(product);
+    public ProductDto createProduct(ProductDto productDto) {
+        var productEntity = productMapper.productToProductEntity(productDto);
 
         try {
 
@@ -34,10 +34,10 @@ public record ProductServiceImpl(ProductRepository productRepository,
     }
 
     @Override
-    public Product updateProduct(Product product) {
+    public ProductDto updateProduct(ProductDto productDto) {
 
         try {
-            var productEntity = productMapper.productToProductEntity(product);
+            var productEntity = productMapper.productToProductEntity(productDto);
             productRepository.save(productEntity);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -65,7 +65,7 @@ public record ProductServiceImpl(ProductRepository productRepository,
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<ProductDto> getAllProducts() {
         try {
             return productMapper.entityToModel(productRepository.findAll());
         } catch (Exception e) {
@@ -75,7 +75,7 @@ public record ProductServiceImpl(ProductRepository productRepository,
     }
 
     @Override
-    public Product getProductById(String id) {
+    public ProductDto getProductById(String id) {
 
         return productRepository.findById(id)
                 .map(productMapper::productEntityToProduct)

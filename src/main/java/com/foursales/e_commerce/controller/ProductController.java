@@ -1,7 +1,7 @@
 package com.foursales.e_commerce.controller;
 
 import com.foursales.e_commerce.domain.service.ProductService;
-import com.foursales.e_commerce.domain.service.model.Product;
+import com.foursales.e_commerce.dto.ProductDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +13,18 @@ import java.util.List;
 public record ProductController(ProductService productService) {
 
     @PostMapping
-    public ResponseEntity<String> createProduct(@RequestBody Product product) {
-        productService.createProduct(product);
+    public ResponseEntity<String> createProduct(@RequestBody ProductDto productDto) {
+        productService.createProduct(productDto);
         return ResponseEntity.status(201).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> listProducts() {
+    public ResponseEntity<List<ProductDto>> listProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> findProduct(@PathVariable String id) {
+    public ResponseEntity<ProductDto> findProduct(@PathVariable String id) {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
@@ -35,8 +35,8 @@ public record ProductController(ProductService productService) {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateProduct(@PathVariable String id, @RequestBody Product product) {
-        productService.updateProduct(product);
+    public ResponseEntity<String> updateProduct(@PathVariable String id, @RequestBody ProductDto productDto) {
+        productService.updateProduct(productDto);
         return ResponseEntity.ok("ok");
     }
 }

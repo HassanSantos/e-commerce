@@ -1,9 +1,10 @@
 package com.foursales.e_commerce.infrastructure.service;
 
+import com.foursales.e_commerce.infrastructure.service.repository.entity.UserEntity;
 import com.foursales.e_commerce.mapper.OrderMapper;
 import com.foursales.e_commerce.domain.service.OrderService;
-import com.foursales.e_commerce.domain.service.model.Order;
-import com.foursales.e_commerce.domain.service.model.OrderProduct;
+import com.foursales.e_commerce.dto.OrderDto;
+import com.foursales.e_commerce.dto.OrderProductDto;
 import com.foursales.e_commerce.dto.UserAverageTicketDTO;
 import com.foursales.e_commerce.dto.UserOrderCountDTO;
 import com.foursales.e_commerce.infrastructure.service.repository.OrderProductRepository;
@@ -12,7 +13,6 @@ import com.foursales.e_commerce.infrastructure.service.repository.ProductReposit
 import com.foursales.e_commerce.infrastructure.service.repository.entity.OrderEntity;
 import com.foursales.e_commerce.infrastructure.service.repository.entity.OrderProductEntity;
 import com.foursales.e_commerce.infrastructure.service.repository.entity.ProdutoEntity;
-import com.foursales.e_commerce.infrastructure.service.repository.entity.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,17 +33,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order createOrder(List<OrderProduct> orderProducts, String user) {
+    public OrderDto createOrder(List<OrderProductDto> orderProductDtos, String user) {
         OrderEntity orderEntity = OrderEntity.builder()
                 .status("PENDENTE")
-                .value(getTotalValue(orderProducts))
+                .value(getTotalValue(orderProductDtos))
                 .creationDate(LocalDateTime.now())
-                .user(User.builder().id(user).build()) // Associando o User ao Order
+                .userEntity(UserEntity.builder().id(user).build()) // Associando o User ao Order
                 .build();
 
         orderRepository.save(orderEntity);
 
-        orderProducts.forEach(i -> orderProductRepository.save(
+        orderProductDtos.forEach(i -> orderProductRepository.save(
                 OrderProductEntity.builder()
                         .orderEntity(orderEntity)
                         .product(ProdutoEntity.builder()
@@ -53,10 +53,10 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.orderEntityToOrder(orderEntity);
     }
 
-    private BigDecimal getTotalValue(List<OrderProduct> orderProducts) {
+    private BigDecimal getTotalValue(List<OrderProductDto> orderProductDtos) {
         BigDecimal totalValue = BigDecimal.ZERO;
-        for (OrderProduct orderProduct : orderProducts) {
-            totalValue = totalValue.add(orderProduct.getValue().multiply(orderProduct.getValue()));
+        for (OrderProductDto orderProductDto : orderProductDtos) {
+            totalValue = totalValue.add(orderProductDto.getValue().multiply(orderProductDto.getValue()));
         }
         return totalValue;
     }
@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    public List<OrderProduct> ordersByUser(String email) {
+    public List<OrderProductDto> ordersByUser(String email) {
         try {
             var orders = orderRepository.findByUser_Email(email);
             return orderMapper.orderEntityToOrder(orders);

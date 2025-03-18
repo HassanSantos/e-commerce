@@ -17,7 +17,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, String> {
         SELECT NEW com.foursales.e_commerce.dto.UserOrderCountDTO(
             u.name, COUNT(o.id))
         FROM User u
-        INNER JOIN OrderEntity o ON u.id = o.user.id
+        INNER JOIN OrderEntity o ON u.id = o.userEntity.id
         GROUP BY u.id
         ORDER BY COUNT(o.id) DESC
         limit 5
@@ -29,7 +29,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, String> {
                          CAST(AVG(o.value) as bigdecimal))
             FROM OrderEntity o
             INNER JOIN User u
-                        on u.id = o.user.id
+                        on u.id = o.userEntity.id
             GROUP BY u.id, u.name
             ORDER BY AVG(o.value) DESC
             """)

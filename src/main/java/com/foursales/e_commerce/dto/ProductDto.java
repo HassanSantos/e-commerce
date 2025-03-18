@@ -1,17 +1,16 @@
-package com.foursales.e_commerce.domain.service.model;
+package com.foursales.e_commerce.dto;
 
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class ProductDto {
 
     private String id;
     private String name;

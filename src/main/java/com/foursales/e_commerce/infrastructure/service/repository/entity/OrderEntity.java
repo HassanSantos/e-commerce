@@ -35,7 +35,7 @@ public class OrderEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private UserEntity userEntity;
 
     @OneToMany(mappedBy = "orderEntity",fetch = FetchType.EAGER)
     private List<OrderProductEntity> orderProducts;
