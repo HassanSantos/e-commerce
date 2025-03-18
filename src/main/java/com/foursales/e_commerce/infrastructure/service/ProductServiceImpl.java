@@ -7,6 +7,7 @@ import com.foursales.e_commerce.infrastructure.service.repository.OrderProductRe
 import com.foursales.e_commerce.infrastructure.service.repository.OrderRepository;
 import com.foursales.e_commerce.infrastructure.service.repository.ProductRepository;
 import com.foursales.e_commerce.infrastructure.service.repository.UserRepository;
+import com.foursales.e_commerce.security.authentication.CustomAuthenticationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,9 +41,8 @@ public record ProductServiceImpl(ProductRepository productRepository,
             var productEntity = productMapper.productToProductEntity(productDto);
             productRepository.save(productEntity);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new CustomAuthenticationException("testete", 500);
         }
-
         return null;
     }
 
