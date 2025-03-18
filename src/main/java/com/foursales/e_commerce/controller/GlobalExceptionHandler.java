@@ -1,5 +1,6 @@
 package com.foursales.e_commerce.controller;
 
+import com.foursales.e_commerce.exeption.BaseException;
 import com.foursales.e_commerce.security.authentication.CustomAuthenticationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.valueOf(ex.getStatusCode()));
     }
 
-    // Trata exceções não previstas, que vão gerar HTTP 500
+
+    @ExceptionHandler(BaseException.class)
+    public ResponseEntity<String> handleBaseException(BaseException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.valueOf(ex.getStatusCode()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralException(Exception ex) {
-        // Loga o erro para diagnósticos
         ex.printStackTrace();
-
-        // Retorna um erro genérico de servidor com HTTP 500
         return new ResponseEntity<>("Erro interno do servidor", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

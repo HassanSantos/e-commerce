@@ -1,7 +1,9 @@
 package com.foursales.e_commerce.infrastructure.service;
 
-public class ProductException extends RuntimeException {
-    public ProductException(String message, Throwable cause) {
-        super(message, cause);
+import com.foursales.e_commerce.exeption.BaseException;
+
+public class ProductException extends BaseException {
+    public ProductException(String message, Throwable cause, int statusCode) {
+        super(message, cause, statusCode);
     }
 }

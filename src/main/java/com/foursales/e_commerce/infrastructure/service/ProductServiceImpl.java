@@ -41,7 +41,7 @@ public record ProductServiceImpl(ProductRepository productRepository,
             var productEntity = productMapper.productToProductEntity(productDto);
             productRepository.save(productEntity);
         } catch (Exception e) {
-            throw new CustomAuthenticationException("testete", 500);
+            throw new ProductException("testete", e, 500);
         }
         return null;
     }

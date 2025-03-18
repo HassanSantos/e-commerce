@@ -26,9 +26,3 @@ class UserNotFoundException extends CustomAuthenticationException {
         super(message, HttpServletResponse.SC_UNAUTHORIZED); // HTTP 401
     }
 }
-
-class InvalidTokenException extends CustomAuthenticationException {
-    public InvalidTokenException(String message) {
-        super(message, HttpServletResponse.SC_BAD_REQUEST); // HTTP 400
-    }
-}
