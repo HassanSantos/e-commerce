@@ -5,7 +5,10 @@ import com.foursales.e_commerce.dto.UserOrderCountDTO;
 import com.foursales.e_commerce.repository.entity.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<OrderEntity, String> {
@@ -32,4 +35,15 @@ public interface OrderRepository extends JpaRepository<OrderEntity, String> {
             """)
     List<UserAverageTicketDTO> findUserAverageTicket();
 
+    @Query("""
+        SELECT SUM(p.value) 
+        FROM OrderEntity p
+        WHERE p.creationDate BETWEEN :startDate AND :endDate
+        AND p.status = :status
+        """)
+    BigDecimal findTotalValueByDateRangeAndStatus(
+            @Param("startDate") LocalDateTime dataInicial,
+            @Param("endDate") LocalDateTime dataFinal,
+            @Param("status") String status
+    );
 }

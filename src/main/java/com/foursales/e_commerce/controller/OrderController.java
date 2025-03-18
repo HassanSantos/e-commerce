@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller()
@@ -34,5 +36,11 @@ public record OrderController(OrderService orderService) {
     @GetMapping("/average-ticket")
     public ResponseEntity<List<UserAverageTicketDTO>> averageTiket() {
         return ResponseEntity.ok(orderService.getAverageTiket());
+    }
+
+    @GetMapping("/total-value")
+    public ResponseEntity<BigDecimal> totalAmountInvoicedPeriod(@RequestParam("startDate") LocalDate startDate,
+                                                                @RequestParam("endDate") LocalDate endDate) {
+        return ResponseEntity.ok(orderService.totalAmountInvoicedPeriod(startDate, endDate));
     }
 }

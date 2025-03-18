@@ -18,9 +18,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -79,9 +79,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<UserOrderCountDTO> getTop5Users() {
         try {
-            var reste = orderRepository.findUserAverageTicket();
-            return orderRepository.findTop5UsersByOrderCount();
 
+            return orderRepository.findTop5UsersByOrderCount();
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
@@ -95,6 +94,12 @@ public class OrderServiceImpl implements OrderService {
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public BigDecimal totalAmountInvoicedPeriod(LocalDate startDate, LocalDate endDate) {
+        return orderRepository.findTotalValueByDateRangeAndStatus(startDate.atStartOfDay(),
+                endDate.atTime(23, 59, 59), "PENDENTE");
     }
 
     private OrderEntity findOrderById(String orderId) {
@@ -122,10 +127,5 @@ public class OrderServiceImpl implements OrderService {
     private void changeStatus(OrderEntity orderEntity, String status) {
         orderEntity.setStatus(status);
         orderRepository.save(orderEntity);
-    }
-
-    @Override
-    public List<Order> getOrdersByUser(UUID userId) {
-        return List.of();
     }
 }

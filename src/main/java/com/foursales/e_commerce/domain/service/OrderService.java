@@ -5,6 +5,8 @@ import com.foursales.e_commerce.domain.service.model.OrderProduct;
 import com.foursales.e_commerce.dto.UserAverageTicketDTO;
 import com.foursales.e_commerce.dto.UserOrderCountDTO;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,5 +15,5 @@ public interface OrderService {
     void payOrder(String orderId);
     List<UserOrderCountDTO> getTop5Users();
     List<UserAverageTicketDTO> getAverageTiket();
-    List<Order> getOrdersByUser(UUID userId);
+    BigDecimal totalAmountInvoicedPeriod(LocalDate startDate, LocalDate endDate);
 }
