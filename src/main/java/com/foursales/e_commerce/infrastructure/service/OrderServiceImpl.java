@@ -56,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
     private BigDecimal getTotalValue(List<OrderProduct> orderProducts) {
         BigDecimal totalValue = BigDecimal.ZERO;
         for (OrderProduct orderProduct : orderProducts) {
-            totalValue = totalValue.add(orderProduct.getPreco().multiply(orderProduct.getPreco()));
+            totalValue = totalValue.add(orderProduct.getValue().multiply(orderProduct.getValue()));
         }
         return totalValue;
     }
