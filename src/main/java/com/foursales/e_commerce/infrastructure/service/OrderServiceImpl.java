@@ -1,8 +1,10 @@
 package com.foursales.e_commerce.infrastructure.service;
 
+import com.foursales.e_commerce.comum.OrderMapper;
 import com.foursales.e_commerce.domain.service.OrderService;
 import com.foursales.e_commerce.domain.service.model.Order;
 import com.foursales.e_commerce.domain.service.model.OrderProduct;
+import com.foursales.e_commerce.dto.UserOrderCountDTO;
 import com.foursales.e_commerce.repository.OrderProductRepository;
 import com.foursales.e_commerce.repository.OrderRepository;
 import com.foursales.e_commerce.repository.ProductRepository;
@@ -10,6 +12,8 @@ import com.foursales.e_commerce.repository.entity.OrderEntity;
 import com.foursales.e_commerce.repository.entity.OrderProductEntity;
 import com.foursales.e_commerce.repository.entity.ProdutoEntity;
 import com.foursales.e_commerce.repository.entity.User;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -18,12 +22,16 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public record OrderServiceImpl(OrderRepository orderRepository,
-                               OrderProductRepository orderProductRepository,
-                               ProductRepository productRepository
-) implements OrderService {
+@RequiredArgsConstructor
+public class OrderServiceImpl implements OrderService {
+
+    private final OrderRepository orderRepository;
+    private final OrderProductRepository orderProductRepository;
+    private final ProductRepository productRepository;
+    private final OrderMapper orderMapper;
 
     @Override
+    @Transactional
     public Order createOrder(List<OrderProduct> orderProducts, String user) {
         OrderEntity orderEntity = OrderEntity.builder()
                 .status("PENDENTE")
@@ -34,7 +42,6 @@ public record OrderServiceImpl(OrderRepository orderRepository,
 
         orderRepository.save(orderEntity);
 
-
         orderProducts.forEach(i -> orderProductRepository.save(
                 OrderProductEntity.builder()
                         .orderEntity(orderEntity)
@@ -42,7 +49,7 @@ public record OrderServiceImpl(OrderRepository orderRepository,
                                 .id(i.getId()).build())
                         .productQuantity(i.getQuantidade())
                         .build()));
-        return null;
+        return orderMapper.orderEntityToOrder(orderEntity);
     }
 
     private BigDecimal getTotalValue(List<OrderProduct> orderProducts) {
@@ -54,26 +61,50 @@ public record OrderServiceImpl(OrderRepository orderRepository,
     }
 
     @Override
-    public Order payOrder(String orderId) {
+    @Transactional
+    public void payOrder(String orderId) {
+        var orderEntity = findOrderById(orderId);
+        var orderProducts = findOrderProductsByOrderId(orderId);
 
-        var orderEntity = orderRepository.findById(orderId);
-        var orderProduct = orderProductRepository.findByOrderEntity_Id(orderId);
+        if (isStockAvailable(orderProducts)) {
+            updateProductStock(orderProducts);
+            changeStatus(orderEntity, "FINALIZADO");
+        } else {
+            changeStatus(orderEntity, "CANCELADO");
+        }
 
-        orderProduct.stream().filter(i ->
-                        i.getProduct().getStockQuantity() - i.getProductQuantity() >= 0)
-                .toList();
+    }
 
-        orderProduct.forEach(i -> {
-            i.getProduct().setStockQuantity(i.getProduct().getStockQuantity() - i.getProductQuantity());
-            productRepository.save(i.getProduct());
+    @Override
+    public List<UserOrderCountDTO> getTop5Users() {
+        return orderRepository.findTop5UsersByOrderCount();
+    }
+
+    private OrderEntity findOrderById(String orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com ID: " + orderId));
+    }
+
+    private List<OrderProductEntity> findOrderProductsByOrderId(String orderId) {
+        return orderProductRepository.findByOrderEntity_Id(orderId);
+    }
+
+    private boolean isStockAvailable(List<OrderProductEntity> orderProducts) {
+        return orderProducts.stream()
+                .allMatch(orderProduct -> orderProduct.getProduct().getStockQuantity() >= orderProduct.getProductQuantity());
+    }
+
+    private void updateProductStock(List<OrderProductEntity> orderProducts) {
+        orderProducts.forEach(orderProduct -> {
+            ProdutoEntity product = orderProduct.getProduct();
+            product.setStockQuantity(product.getStockQuantity() - orderProduct.getProductQuantity());
+            productRepository.save(product);
         });
+    }
 
-        orderEntity.ifPresent(order -> {
-            order.setStatus("FINALIZADO");
-            orderRepository.save(order);
-        });
-
-        return null;
+    private void changeStatus(OrderEntity orderEntity, String status) {
+        orderEntity.setStatus(status);
+        orderRepository.save(orderEntity);
     }
 
     @Override

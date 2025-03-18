@@ -7,7 +7,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity(name = "pedido")
+@Entity
+@Table(name="pedido")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

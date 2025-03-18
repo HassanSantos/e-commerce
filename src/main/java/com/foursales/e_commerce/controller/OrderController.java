@@ -2,16 +2,15 @@ package com.foursales.e_commerce.controller;
 
 import com.foursales.e_commerce.domain.service.OrderService;
 import com.foursales.e_commerce.domain.service.model.OrderProduct;
+import com.foursales.e_commerce.dto.UserOrderCountDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@Controller()
+@RequestMapping(value = "/orders")
 public record OrderController(OrderService orderService) {
 
     @PostMapping("/create")
@@ -24,5 +23,10 @@ public record OrderController(OrderService orderService) {
     public ResponseEntity<String> finalizar(@PathVariable String id) {
         orderService.payOrder(id);
         return ResponseEntity.ok("ok");
+    }
+
+    @GetMapping("/top")
+    public ResponseEntity<List<UserOrderCountDTO>> findalizar() {
+        return ResponseEntity.ok(orderService.getTop5Users());
     }
 }

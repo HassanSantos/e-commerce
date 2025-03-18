@@ -21,7 +21,7 @@ public class OrderProductEntity {
     @JoinColumn(name = "pedido_id", referencedColumnName = "id")
     private OrderEntity orderEntity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "produto_id", referencedColumnName = "id")
     private ProdutoEntity product;
 

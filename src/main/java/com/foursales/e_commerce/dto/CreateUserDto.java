@@ -6,6 +6,5 @@ public record CreateUserDto(
         String email,
         String cpf,
         String password,
-        RoleName role
-) {
+        RoleName role) {
 }

@@ -21,4 +21,5 @@ public class Product {
     private Integer stockQuantity;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Boolean ativo;
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicUpdate
 //TODO: Mudar nome da entidade
 public class ProdutoEntity {
 
@@ -35,4 +37,5 @@ public class ProdutoEntity {
     private LocalDateTime createdAt;
     @Column(name = "data_atualizacao")
     private LocalDateTime updatedAt;
+    private Boolean ativo;
 }

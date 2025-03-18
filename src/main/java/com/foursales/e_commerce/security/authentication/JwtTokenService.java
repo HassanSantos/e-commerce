@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.foursales.e_commerce.dto.UserOrderCountDTO;
 import com.foursales.e_commerce.security.userdetails.UserDetailsImpl;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class JwtTokenService {
 
     public String generateToken(UserDetailsImpl user) {
         try {
+
             // Define o algoritmo HMAC SHA256 para criar a assinatura do token passando a chave secreta definida
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
             return JWT.create()
