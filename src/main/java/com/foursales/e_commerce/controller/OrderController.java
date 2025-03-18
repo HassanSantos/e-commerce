@@ -2,6 +2,7 @@ package com.foursales.e_commerce.controller;
 
 import com.foursales.e_commerce.domain.service.OrderService;
 import com.foursales.e_commerce.domain.service.model.OrderProduct;
+import com.foursales.e_commerce.dto.UserAverageTicketDTO;
 import com.foursales.e_commerce.dto.UserOrderCountDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,5 +29,10 @@ public record OrderController(OrderService orderService) {
     @GetMapping("/top")
     public ResponseEntity<List<UserOrderCountDTO>> findalizar() {
         return ResponseEntity.ok(orderService.getTop5Users());
+    }
+
+    @GetMapping("/average-ticket")
+    public ResponseEntity<List<UserAverageTicketDTO>> averageTiket() {
+        return ResponseEntity.ok(orderService.getAverageTiket());
     }
 }

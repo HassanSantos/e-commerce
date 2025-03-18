@@ -4,6 +4,7 @@ import com.foursales.e_commerce.comum.OrderMapper;
 import com.foursales.e_commerce.domain.service.OrderService;
 import com.foursales.e_commerce.domain.service.model.Order;
 import com.foursales.e_commerce.domain.service.model.OrderProduct;
+import com.foursales.e_commerce.dto.UserAverageTicketDTO;
 import com.foursales.e_commerce.dto.UserOrderCountDTO;
 import com.foursales.e_commerce.repository.OrderProductRepository;
 import com.foursales.e_commerce.repository.OrderRepository;
@@ -77,7 +78,23 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<UserOrderCountDTO> getTop5Users() {
-        return orderRepository.findTop5UsersByOrderCount();
+        try {
+            var reste = orderRepository.findUserAverageTicket();
+            return orderRepository.findTop5UsersByOrderCount();
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<UserAverageTicketDTO> getAverageTiket() {
+        try {
+            return orderRepository.findUserAverageTicket();
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private OrderEntity findOrderById(String orderId) {
