@@ -1,10 +1,14 @@
 package com.foursales.e_commerce.controller;
 
 import com.foursales.e_commerce.domain.service.OrderService;
+import com.foursales.e_commerce.domain.service.model.Order;
+import com.foursales.e_commerce.domain.service.model.OrderModel;
 import com.foursales.e_commerce.domain.service.model.OrderProduct;
 import com.foursales.e_commerce.dto.UserAverageTicketDTO;
 import com.foursales.e_commerce.dto.UserOrderCountDTO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +45,15 @@ public record OrderController(OrderService orderService) {
     @GetMapping("/total-value")
     public ResponseEntity<BigDecimal> totalAmountInvoicedPeriod(@RequestParam("startDate") LocalDate startDate,
                                                                 @RequestParam("endDate") LocalDate endDate) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+
         return ResponseEntity.ok(orderService.totalAmountInvoicedPeriod(startDate, endDate));
+    }
+
+    @GetMapping("/current-user")
+    public ResponseEntity<List<OrderProduct>> ordersUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return ResponseEntity.ok(orderService.ordersByUser(authentication.getPrincipal().toString()));
     }
 }

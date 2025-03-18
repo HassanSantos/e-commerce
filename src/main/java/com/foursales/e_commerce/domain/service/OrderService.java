@@ -8,7 +8,6 @@ import com.foursales.e_commerce.dto.UserOrderCountDTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 public interface OrderService {
     Order createOrder(List<OrderProduct> order, String user);
@@ -16,4 +15,5 @@ public interface OrderService {
     List<UserOrderCountDTO> getTop5Users();
     List<UserAverageTicketDTO> getAverageTiket();
     BigDecimal totalAmountInvoicedPeriod(LocalDate startDate, LocalDate endDate);
+    List<OrderProduct> ordersByUser(String email);
 }

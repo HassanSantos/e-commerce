@@ -102,6 +102,16 @@ public class OrderServiceImpl implements OrderService {
                 endDate.atTime(23, 59, 59), "PENDENTE");
     }
 
+
+    public List<OrderProduct> ordersByUser(String email) {
+        try {
+            var orders = orderRepository.findByUser_Email(email);
+            return orderMapper.orderEntityToOrder(orders);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private OrderEntity findOrderById(String orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado com ID: " + orderId));

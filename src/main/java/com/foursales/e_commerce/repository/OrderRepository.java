@@ -46,4 +46,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, String> {
             @Param("endDate") LocalDateTime dataFinal,
             @Param("status") String status
     );
+
+    List<OrderEntity> findByUser_Email(String email);
 }
