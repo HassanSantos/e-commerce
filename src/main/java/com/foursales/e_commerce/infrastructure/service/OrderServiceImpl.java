@@ -1,5 +1,6 @@
 package com.foursales.e_commerce.infrastructure.service;
 
+import com.foursales.e_commerce.exeption.OrderServiceException;
 import com.foursales.e_commerce.infrastructure.service.repository.entity.UserEntity;
 import com.foursales.e_commerce.mapper.OrderMapper;
 import com.foursales.e_commerce.domain.service.OrderService;
@@ -34,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDto createOrder(List<OrderProductDto> orderProductDtos, String user) {
+
         OrderEntity orderEntity = OrderEntity.builder()
                 .status("PENDENTE")
                 .value(getTotalValue(orderProductDtos))
@@ -41,6 +43,7 @@ public class OrderServiceImpl implements OrderService {
                 .userEntity(UserEntity.builder().id(user).build()) // Associando o User ao Order
                 .build();
 
+        //TODO: Criar enum do status
         orderRepository.save(orderEntity);
 
         orderProductDtos.forEach(i -> orderProductRepository.save(
@@ -72,6 +75,8 @@ public class OrderServiceImpl implements OrderService {
             changeStatus(orderEntity, "FINALIZADO");
         } else {
             changeStatus(orderEntity, "CANCELADO");
+            //TODO: Criar constante com as mensagens
+            throw new OrderServiceException("A compra foi cancelada, não há produtos suficientes", 500);
         }
 
     }
@@ -81,8 +86,8 @@ public class OrderServiceImpl implements OrderService {
         try {
 
             return orderRepository.findTop5UsersByOrderCount();
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new OrderServiceException("Ocorreu um erro ao listar os 5 usuários que mais compram", e, 500);
         }
     }
 
@@ -92,14 +97,19 @@ public class OrderServiceImpl implements OrderService {
             return orderRepository.findUserAverageTicket();
 
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw new OrderServiceException("Ocorreu um erro ao listar o tiket médio de cada usuário", e, 500);
         }
     }
 
     @Override
     public BigDecimal totalAmountInvoicedPeriod(LocalDate startDate, LocalDate endDate) {
-        return orderRepository.findTotalValueByDateRangeAndStatus(startDate.atStartOfDay(),
-                endDate.atTime(23, 59, 59), "PENDENTE");
+        try {
+            return orderRepository.findTotalValueByDateRangeAndStatus(startDate.atStartOfDay(),
+                    endDate.atTime(23, 59, 59), "FINALIZADO");
+        }catch (Exception e){
+            throw new OrderServiceException("Ocorreu um erro ao retornar faturamento", e, 500);
+
+        }
     }
 
 
@@ -108,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
             var orders = orderRepository.findByUserEntity_Email(email);
             return orderMapper.orderEntityToOrder(orders);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new OrderServiceException("Ocorreu um erro ao consultar pedidos do usuário", e, 500);
         }
     }
 

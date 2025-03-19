@@ -1,13 +1,13 @@
 package com.foursales.e_commerce.infrastructure.service;
 
-import com.foursales.e_commerce.dto.ProductDto;
-import com.foursales.e_commerce.mapper.ProductMapper;
 import com.foursales.e_commerce.domain.service.ProductService;
+import com.foursales.e_commerce.dto.ProductDto;
+import com.foursales.e_commerce.exeption.ProductException;
 import com.foursales.e_commerce.infrastructure.service.repository.OrderProductRepository;
 import com.foursales.e_commerce.infrastructure.service.repository.OrderRepository;
 import com.foursales.e_commerce.infrastructure.service.repository.ProductRepository;
 import com.foursales.e_commerce.infrastructure.service.repository.UserRepository;
-import com.foursales.e_commerce.security.authentication.CustomAuthenticationException;
+import com.foursales.e_commerce.mapper.ProductMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public record ProductServiceImpl(ProductRepository productRepository,
 
         } catch (Exception e) {
 //            TODO: CRIAR EXCEPTION EXCLUSIVA
-            new RuntimeException(e);
+            throw new ProductException("error when save product", e, 500);
         }
         return null;
     }
@@ -41,7 +41,7 @@ public record ProductServiceImpl(ProductRepository productRepository,
             var productEntity = productMapper.productToProductEntity(productDto);
             productRepository.save(productEntity);
         } catch (Exception e) {
-            throw new ProductException("testete", e, 500);
+            throw new ProductException("Erro ao atualizar produto", e, 500);
         }
         return null;
     }
@@ -60,7 +60,7 @@ public record ProductServiceImpl(ProductRepository productRepository,
             }
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ProductException("Erro ao deletar produto", e, 500);
         }
     }
 
@@ -69,7 +69,7 @@ public record ProductServiceImpl(ProductRepository productRepository,
         try {
             return productMapper.entityToModel(productRepository.findAll());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ProductException("Erro ao retornar lista de produtos cadastrados", e, 500);
         }
 
     }
@@ -79,6 +79,6 @@ public record ProductServiceImpl(ProductRepository productRepository,
 
         return productRepository.findById(id)
                 .map(productMapper::productEntityToProduct)
-                .orElse(null);
+                .orElseThrow(() -> new ProductException("Erro ao retornar lista de produtos cadastrados", 500));
     }
 }
